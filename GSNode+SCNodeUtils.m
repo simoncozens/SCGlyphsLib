@@ -42,28 +42,26 @@
 }
 
 - (void) correct {
-    GSNode *n = self; /* urgh */
-        if (!n) return;
-        if (n.type != CURVE || n.connection != SMOOTH) return;
-        NSInteger index = [[n parent] indexOfNode:n];
-        GSNode* rhandle = [[n parent] nodeAtIndex:index+1];
-        GSNode* lhandle = [[n parent] nodeAtIndex:index-1];
+    if (self.type != CURVE || self.connection != SMOOTH) return;
+    NSInteger index = [[self parent] indexOfNode:self];
+    GSNode* rhandle = [[self parent] nodeAtIndex:index+1];
+    GSNode* lhandle = [[self parent] nodeAtIndex:index-1];
 //        CGFloat lHandleLen = GSDistance([n position], [lhandle position]);
-        CGFloat rHandleLen = GSDistance([n position], [rhandle position]);
-        // Average the two angles first
-        NSPoint ua = GSUnitVectorFromTo([lhandle position], [n position]);
-        NSPoint ub = GSUnitVectorFromTo([n position], [rhandle position]);
-        NSPoint average = GSScalePoint(GSAddPoints(ua, ub),0.5);
-        [rhandle setPosition:GSAddPoints([n position], GSScalePoint(average, rHandleLen))];
-        //    if (f) {
-        //        // Set rhandle
-        //        NSPoint newPos = GSLerp([lhandle position], [n position], (lHandleLen+rHandleLen)/lHandleLen);
-        //        [rhandle setPositionFast:newPos];
-        //    } else {
-        //        NSPoint newPos = GSLerp([rhandle position], [n position], (lHandleLen+rHandleLen)/rHandleLen);
-        //        [lhandle setPositionFast:newPos];
-        //
-        //    }
-    }
+    CGFloat rHandleLen = GSDistance([self position], [rhandle position]);
+    // Average the two angles first
+    NSPoint ua = GSUnitVectorFromTo([lhandle position], [self position]);
+    NSPoint ub = GSUnitVectorFromTo([self position], [rhandle position]);
+    NSPoint average = GSScalePoint(GSAddPoints(ua, ub),0.5);
+    [rhandle setPosition:GSAddPoints([self position], GSScalePoint(average, rHandleLen))];
+    //    if (f) {
+    //        // Set rhandle
+    //        NSPoint newPos = GSLerp([lhandle position], [self position], (lHandleLen+rHandleLen)/lHandleLen);
+    //        [rhandle setPositionFast:newPos];
+    //    } else {
+    //        NSPoint newPos = GSLerp([rhandle position], [self position], (lHandleLen+rHandleLen)/rHandleLen);
+    //        [lhandle setPositionFast:newPos];
+    //
+    //    }
+}
 
 @end
