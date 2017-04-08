@@ -55,7 +55,7 @@
 - (CGFloat)distanceFromPoint:(NSPoint)p;
 
 /*! Finds the distance between the point and the path, but really quickly
- * \param p A point
+ * \param aPoint A point
  * \param maxDistance The furthest distance away from the path worth checking
  * \returns The smallest distance between the point and the path
  */

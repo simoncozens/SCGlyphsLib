@@ -22,7 +22,7 @@
 /*! Creates a smooth path between the given points
  * \param data An array of GSNodes
  * \param error A tolerance value for curve fitting
- * \param cornerTolerance Tolerance value for corner detection
+ * \param corner Tolerance value for corner detection
  * \param maxSegments The maximum number of segments
  * \returns A GSPath Bezier curve or NULL if no curve would fit
  */
