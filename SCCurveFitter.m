@@ -21,7 +21,7 @@
 #define SCLog( ... )
 #endif
 
-boolean_t is_zero(NSPoint t) { return t.x == 0 && t.y == 0; }
+boolean_t is_zero(NSPoint t) { return fabs(t.x) <= FLT_EPSILON && fabs(t.y) <= FLT_EPSILON; }
 
 @implementation SCCurveFitter
 const NSPoint unconstrained_tangent = {.x = 0, .y =0};
@@ -68,12 +68,12 @@ const NSPoint unconstrained_tangent = {.x = 0, .y =0};
         SCLog(@"Path number 1, den is %f, num.x = %f, num.y = %f", den, num.x, num.y);
         bez[1] = [NSValue valueWithPoint:NSMakePoint(num.x / den, num.y / den)];
     } else {
-        bez[1] = [NSValue valueWithPoint:GSLerp([bez[0] pointValue], [bez[3] pointValue], 1.0/3.0)];
+        bez[1] = [NSValue valueWithPoint:GSLerp([bez[0] pointValue], [bez[3] pointValue], 2.0/3.0)];
     }
 }
 
 + (GSPath*) generateBezierFromPoints:(NSArray*)data withParameters:(NSArray*)u leftTangent: (NSPoint)tHat1 rightTangent: (NSPoint)tHat2 error:(double) tolerance_sq {
-    bool const est1 = is_zero(tHat1);
+    bool const est1 = is_zero(tHat1); // XXX Always false
     bool const est2 = is_zero(tHat2);
     NSPoint est_tHat1 = est1 ? [self leftTangent:data tolerance:tolerance_sq] : tHat1;
     NSPoint est_tHat2 = est2 ? [self rightTangent:data tolerance:tolerance_sq] : tHat2;
@@ -359,7 +359,8 @@ const NSPoint unconstrained_tangent = {.x = 0, .y =0};
         GSPath* right = [self fitCurveToPoints:rightPoints tangent1:recTHat1 tangent2:tHat2 withError:error cornerTolerance:corner  maxSegments:rec_max_beziers2];
         SCLog(@"Left  curve: %@", [left nodes]);
 
-        [left removeNodeAtIndex:([left countOfNodes]-1)];
+//        [left removeNodeAtIndex:([left countOfNodes]-1)];
+        [left removeObjectFromNodesAtIndex:([left countOfNodes]-1)];
         SCLog(@"Right  curve: %@", [right nodes]);
         [left append:right];
         SCLog(@"Final  curve: %@", [left nodes]);
