@@ -16,9 +16,12 @@
     NSInteger white = 0;
     NSInteger x;
     NSInteger y;
-    for (x = 0; x < self.width; x+= self.width/100) {
-        for (y=0; y < self.glyphMetrics.ascender; y+= self.glyphMetrics.ascender/100) {
-            NSPoint pt = NSMakePoint(x,y);
+    GSGlyphMetrics glyphMetrics = self.glyphMetrics;
+    CGFloat ascender = glyphMetrics.ascender;
+    CGFloat width = self.width;
+    for (x = 0; x < width; x += width / 100) {
+        for (y = 0; y < ascender; y += ascender / 100) {
+            NSPoint pt = NSMakePoint(x, y);
             if ([p containsPoint:pt]) {
                 black++;
             } else {
@@ -26,7 +29,7 @@
             }
         }
     }
-    return black/(CGFloat)(black+white);
+    return black / (CGFloat)(black + white);
 //    int segments = (int)p.elementCount;
 //    CGFloat white = self.width * (self.glyphMetrics.ascender - self.glyphMetrics.descender);
 //    NSPoint curpoint;
