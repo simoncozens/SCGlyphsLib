@@ -43,9 +43,9 @@
 
 - (void) correct {
     if (self.type != CURVE || self.connection != SMOOTH) return;
-    NSInteger index = [[self parent] indexOfNode:self];
-    GSNode* rhandle = [[self parent] nodeAtIndex:index+1];
-    GSNode* lhandle = [[self parent] nodeAtIndex:index-1];
+    NSInteger index = [[self parentPath] indexOfNode:self];
+    GSNode* rhandle = [[self parentPath] nodeAtIndex:index+1];
+    GSNode* lhandle = [[self parentPath] nodeAtIndex:index-1];
 //        CGFloat lHandleLen = GSDistance([n position], [lhandle position]);
     CGFloat rHandleLen = GSDistance([self position], [rhandle position]);
     // Average the two angles first
