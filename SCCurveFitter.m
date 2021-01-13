@@ -13,6 +13,14 @@
 #define B2(u) ( 3 * u * u  *  ( 1.0 - u ) )
 #define B3(u) ( u * u * u )
 
+//#define DEBUG_MODE
+
+#ifdef DEBUG_MODE
+#define SCLog NSLog
+#else
+#define SCLog( ... )
+#endif
+
 boolean_t is_zero(NSPoint t) { return fabs(t.x) <= FLT_EPSILON && fabs(t.y) <= FLT_EPSILON; }
 
 @implementation SCCurveFitter
