@@ -11,13 +11,21 @@
 @implementation GSNode (SCNodeUtils)
 
 - (GSNode*) nextNode {
-    GSPath *p = [self parent];
+#ifdef GLYPHS3
+    GSPath *p = [self parentPath];
+#else
+    GSPath *p = [self path];
+#endif
     NSUInteger index = [p indexOfNode:self];
     return index == [p countOfNodes] ? [p nodeAtIndex:0] : [p nodeAtIndex: index+1];
 }
 
 - (GSNode*) prevNode {
-    GSPath *p = [self parent];
+#ifdef GLYPHS3
+    GSPath *p = [self parentPath];
+#else
+    GSPath *p = [self path];
+#endif
     NSUInteger index = [p indexOfNode:self];
     return index == 0 ? [p nodeAtIndex:([p countOfNodes]-1)] : [p nodeAtIndex: index-1];
 }
@@ -43,9 +51,15 @@
 
 - (void) correct {
     if (self.type != CURVE || self.connection != SMOOTH) return;
+#ifdef GLYPHS3
     NSInteger index = [[self parentPath] indexOfNode:self];
     GSNode* rhandle = [[self parentPath] nodeAtIndex:index+1];
     GSNode* lhandle = [[self parentPath] nodeAtIndex:index-1];
+#else
+    NSInteger index = [[self parent] indexOfNode:self];
+    GSNode* rhandle = [[self parent] nodeAtIndex:index+1];
+    GSNode* lhandle = [[self parent] nodeAtIndex:index-1];
+#endif
 //        CGFloat lHandleLen = GSDistance([n position], [lhandle position]);
     CGFloat rHandleLen = GSDistance([self position], [rhandle position]);
     // Average the two angles first
