@@ -68,7 +68,7 @@ const NSPoint unconstrained_tangent = {.x = 0, .y =0};
         SCLog(@"Path number 1, den is %f, num.x = %f, num.y = %f", den, num.x, num.y);
         bez[1] = [NSValue valueWithPoint:NSMakePoint(num.x / den, num.y / den)];
     } else {
-        bez[1] = [NSValue valueWithPoint:GSLerp([bez[0] pointValue], [bez[3] pointValue], 2.0/3.0)];
+        bez[1] = [NSValue valueWithPoint:GSPointOnLine([bez[0] pointValue], [bez[3] pointValue], 2.0/3.0)];
     }
 }
 
@@ -233,7 +233,7 @@ const NSPoint unconstrained_tangent = {.x = 0, .y =0};
 
 + (double)computeHookFrom:(NSPoint)prev To:(NSPoint)cur parameter:(CGFloat)u path:(GSPath*)path cornerTolerance:(double)tolerance {
     NSPoint p = [path pointAtPathTime:u];
-    CGFloat dist = GSDistance(GSLerp(prev,cur,0.5),p);
+    CGFloat dist = GSDistance(GSPointOnLine(prev,cur,0.5),p);
     if (dist < tolerance) return 0;
     double const allowed = GSDistance(prev, cur) + tolerance;
     return dist / allowed;
